@@ -8,7 +8,7 @@ void master_code()
     int n = 0, i;
     double a;
 
-    for (i = 0; i < N; i++)
+    for (i = 1; i < N; i++)
     {
         a = (n + 1.0) / i;
         MPI_Send(&n, 1, MPI_INT, 1, 1, MPI_COMM_WORLD);
@@ -24,7 +24,7 @@ void slave_code()
     int n=0, i;
     double a;
 
-    for (i = 0; i < N; i++)
+    for (i = 1; i < N; i++)
     {
         a = (n + 1.0) / i;
 
