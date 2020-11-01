@@ -1,0 +1,27 @@
++ Lệnh 1: cập nhật hệ thống sau khi cài đặt Ubuntu
+sudo apt update && sudo apt upgrade
+
++ Lệnh 2: cài đặt các gói biên dịch cơ bản
+sudo apt install build-essential gcc g++ gfortran
+
++ Lệnh 3: cài đặt OpenMPI
+sudo apt install openmpi-bin openmpi-common mpi-default-dev
+
+sau khi chạy xong, anh chạy 2 lệnh sau để kiểm tra
++ Lệnh 1:
+which mpirun
+
++ Lệnh 2:
+which mpicc
+
++ Lenh build
+mpicc ten_file -lm
+
++ Lệnh Run
+mpicc -np so_core a.out
+
++ gcc
+gcc ex2.c -o ex2 -lm
+./ex2
+
+nếu có kết quả trả về thì việc cài đặt đã ok
