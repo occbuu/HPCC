@@ -10,11 +10,10 @@ void master_code()
 
     for (i = 0; i < N; i++)
     {
-        a = (n + 1) / i;
+        a = (n + 1.0) / i;
+        MPI_Send(&n, 1, MPI_INT, 1, 1, MPI_COMM_WORLD);
 
-        MPI_Send(&n, 0, MPI_INT, 1, 1, MPI_COMM_WORLD);
-
-        MPI_Recv(&n, 0, MPI_INT, 1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(&n, 1, MPI_INT, 1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         printf("master i=%d n=%d a=%f\n", i, n, a);
         n++;
     }
@@ -22,17 +21,32 @@ void master_code()
 
 void slave_code()
 {
-    int n, i;
+    int n=0, i;
     double a;
 
-    for (i = 0; i < N; i++)        
+    for (i = 0; i < N; i++)
     {
-        a = (n + 1) / i;
+        a = (n + 1.0) / i;
 
-        MPI_Recv(&n, 0, MPI_INT, 0, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(&n, 1, MPI_INT, 0, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         printf("slave i=%d n=%d a=%f\n", i, n, a);
         n++;
 
-        MPI_Send(&n, 0, MPI_INT, 0, 1, MPI_COMM_WORLD);
+        MPI_Send(&n, 1, MPI_INT, 0, 1, MPI_COMM_WORLD);
     }
+}
+
+void main()
+{
+    int size, rank;
+    MPI_Init(NULL, NULL);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    if (rank == 0)
+        master_code();
+    else
+        slave_code();
+
+    MPI_Finalize();
 }
